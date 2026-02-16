@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pushkar Sharma | Salesforce Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyber-blue: #00f3ff;
+            --cyber-pink: #ff006e;
+            --cyber-purple: #8b5cf6;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: #131318;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-glow: rgba(0, 243, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+            animation: bgShift 20s ease infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.7);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-pink));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyber-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 5% 0 5%;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-pink), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px var(--accent-glow));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(0, 243, 255, 0.6));
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            letter-spacing: 1px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .highlight {
+            color: var(--cyber-blue);
+            font-weight: 600;
+        }
+
+        .hero-description {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 2rem 0;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 40px rgba(0, 243, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cyber-blue);
+            border: 2px solid var(--cyber-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--cyber-blue);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 30px rgba(0, 243, 255, 0.4);
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 5rem 0;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .stat-card {
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.3);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+        }
+
+        /* Experience Cards */
+        .experience-grid {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .experience-card {
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--cyber-blue), var(--cyber-pink));
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+        }
+
+        .experience-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .experience-card:hover {
+            border-color: var(--cyber-blue);
+            box-shadow: 0 10px 50px rgba(0, 243, 255, 0.2);
+            transform: translateX(10px);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .experience-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+        }
+
+        .experience-company {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .experience-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .achievement {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid rgba(0, 243, 255, 0.3);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .achievement:hover {
+            border-left-color: var(--cyber-blue);
+            color: var(--text-primary);
+            transform: translateX(5px);
+        }
+
+        .achievement-icon {
+            color: var(--cyber-blue);
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.1), transparent);
+            transform: translate(50%, -50%);
+        }
+
+        .skill-category:hover {
+            border-color: var(--cyber-blue);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .skill-category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--cyber-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-pink));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            border-color: var(--cyber-blue);
+            box-shadow: 0 15px 50px rgba(0, 243, 255, 0.3);
+            transform: translateY(-10px);
+        }
+
+        .project-content {
+            padding: 2.5rem;
+        }
+
+        .project-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tech-badge {
+            padding: 0.3rem 0.8rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            color: var(--cyber-purple);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Certifications */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .cert-card {
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card::before {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: var(--cyber-blue);
+            opacity: 0.2;
+        }
+
+        .cert-card:hover {
+            border-color: var(--cyber-blue);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .cert-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+            line-height: 1.4;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(19, 19, 24, 0.6);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--cyber-blue);
+            box-shadow: 0 5px 30px rgba(0, 243, 255, 0.2);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--cyber-blue);
+        }
+
+        .contact-text a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-text a:hover {
+            color: var(--cyber-blue);
+        }
+
+        .contact-cta {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .contact-cta h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyber-blue);
+            margin-bottom: 1rem;
+        }
+
+        .contact-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 8, 0.95);
+            border-top: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            color: var(--cyber-blue);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--cyber-blue);
+            color: var(--dark-bg);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.4);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-purple));
+            border: none;
+            color: var(--dark-bg);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 5%;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .projects-grid,
+            .skills-grid,
+            .certs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--cyber-blue), var(--cyber-purple));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--cyber-pink), var(--cyber-blue));
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">PUSHKAR</div>
+        <ul class="nav-links">
+            <li><a href="#about">ABOUT</a></li>
+            <li><a href="#experience">EXPERIENCE</a></li>
+            <li><a href="#skills">SKILLS</a></li>
+            <li><a href="#projects">PROJECTS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="about">
+        <div class="hero-content">
+            <div class="glitch-wrapper">
+                <h1 class="glitch">PUSHKAR SHARMA</h1>
+            </div>
+            <p class="subtitle">
+                <span class="highlight">Salesforce Architect</span> | Lightning Solutions Specialist | AI Automation Expert
+            </p>
+            <p class="hero-description">
+                Crafting next-generation Salesforce solutions with 3+ years of architecting Lightning platforms using Apex, LWC, and AI-powered automation. Specialized in AppExchange development, enterprise integrations, and delivering high-performance cloud solutions that drive business transformation.
+            </p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">LET'S BUILD SOMETHING</a>
+                <a href="https://www.linkedin.com/in/pushkar-sharma-6306068840" target="_blank" class="btn btn-secondary">VIEW LINKEDIN</a>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">YEARS EXPERIENCE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">ENTERPRISE DEPLOYMENTS</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">CODE COVERAGE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">&lt;2%</div>
+                    <div class="stat-label">DEFECT RATE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="section-header">
+            <h2 class="section-title">PROFESSIONAL JOURNEY</h2>
+            <p class="section-subtitle">Building enterprise-grade Salesforce solutions across multiple clouds and industries</p>
+        </div>
+
+        <div class="experience-grid">
+            <!-- Current Role -->
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Salesforce Consultant</h3>
+                        <p class="experience-company">Infoglen</p>
+                    </div>
+                    <span class="experience-date">Oct 2024 - Present</span>
+                </div>
+                <div class="achievements">
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Delivered 5+ Lightning implementations with <strong>&lt;2% post-release defects</strong> and <strong>95% on-time delivery</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Integrated JIRA and PSA tools using REST APIs achieving <strong>real-time bidirectional sync with zero data loss</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Reduced production incident resolution time by <strong>40%</strong> through systematic RCA and hotfix deployment</p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Optimized SOQL queries improving data processing speed by <strong>60% for 100K+ records</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Built Einstein Discovery models improving Sales prediction accuracy from <strong>65% to 85%</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Deployed Prompt Builder automation reducing Service agent response time by <strong>50%</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Mentored 5 developers with <strong>3 advancing to mid-level roles</strong> within 12 months</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous Role -->
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Associate Salesforce Consultant</h3>
+                        <p class="experience-company">Infoglen</p>
+                    </div>
+                    <span class="experience-date">Oct 2023 - Oct 2024</span>
+                </div>
+                <div class="achievements">
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Built 20+ reusable Lightning Web Components reducing development time by <strong>35%</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Developed Expense Manager App automating expense tracking for <strong>100+ employees</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Implemented REST API integrations with 5+ external systems achieving <strong>99.9% uptime</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Optimized SOQL queries reducing CPU timeout exceptions by <strong>72%</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Maintained <strong>95% sprint completion rate</strong> across 8 Agile sprints</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trainee Role -->
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Salesforce Developer Trainee</h3>
+                        <p class="experience-company">Infoglen</p>
+                    </div>
+                    <span class="experience-date">Dec 2022 - Oct 2023</span>
+                </div>
+                <div class="achievements">
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Developed 15+ Lightning Web Components, Apex triggers with <strong>90%+ code coverage</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Contributed to 40% of trainee sprint deliverables through feature development</p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Mastered Salesforce security and SOQL optimization through <strong>200+ hours of training</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Performed UAT identifying and resolving <strong>50+ defects pre-production</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intern Role -->
+            <div class="experience-card">
+                <div class="experience-header">
+                    <div>
+                        <h3 class="experience-title">Software Developer Intern</h3>
+                        <p class="experience-company">Dozee</p>
+                    </div>
+                    <span class="experience-date">Feb 2022 - May 2022</span>
+                </div>
+                <div class="achievements">
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Built ReactJS dashboard serving <strong>500+ daily active users</strong> with 99.5% uptime</p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Integrated frontend with REST APIs improving page load time by <strong>25%</strong></p>
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">▸</span>
+                        <p>Created 8 reusable React components adopted across 3 projects</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="section-header">
+            <h2 class="section-title">TECHNICAL ARSENAL</h2>
+            <p class="section-subtitle">Full-stack Salesforce expertise across development, integration, and AI automation</p>
+        </div>
+
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3 class="skill-category-title">⚡ DEVELOPMENT</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Apex</span>
+                    <span class="skill-tag">Lightning Web Components</span>
+                    <span class="skill-tag">Visualforce</span>
+                    <span class="skill-tag">SOQL</span>
+                    <span class="skill-tag">SOSL</span>
+                    <span class="skill-tag">Aura</span>
+                    <span class="skill-tag">Triggers</span>
+                    <span class="skill-tag">Batch Apex</span>
+                    <span class="skill-tag">Queueable</span>
+                    <span class="skill-tag">Future Methods</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 class="skill-category-title">🔧 DECLARATIVE</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Flow Builder</span>
+                    <span class="skill-tag">Process Builder</span>
+                    <span class="skill-tag">Validation Rules</span>
+                    <span class="skill-tag">Approval Processes</span>
+                    <span class="skill-tag">Formula Fields</span>
+                    <span class="skill-tag">Workflow Rules</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 class="skill-category-title">🔗 INTEGRATION</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">REST API</span>
+                    <span class="skill-tag">SOAP API</span>
+                    <span class="skill-tag">Named Credentials</span>
+                    <span class="skill-tag">OAuth 2.0</span>
+                    <span class="skill-tag">Platform Events</span>
+                    <span class="skill-tag">Metadata API</span>
+                    <span class="skill-tag">JSON</span>
+                    <span class="skill-tag">XML</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 class="skill-category-title">🤖 AI & ANALYTICS</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Einstein Discovery</span>
+                    <span class="skill-tag">Prompt Builder</span>
+                    <span class="skill-tag">Agentforce</span>
+                    <span class="skill-tag">CRM Analytics</span>
+                    <span class="skill-tag">Reports</span>
+                    <span class="skill-tag">Dashboards</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 class="skill-category-title">🚀 DEVOPS</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Salesforce DX</span>
+                    <span class="skill-tag">Salesforce CLI</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Change Sets</span>
+                    <span class="skill-tag">CI/CD</span>
+                    <span class="skill-tag">2GP Packages</span>
+                    <span class="skill-tag">1GP Packages</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3 class="skill-category-title">☁️ CLOUDS & TOOLS</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Sales Cloud</span>
+                    <span class="skill-tag">Service Cloud</span>
+                    <span class="skill-tag">Experience Cloud</span>
+                    <span class="skill-tag">Field Service</span>
+                    <span class="skill-tag">VS Code</span>
+                    <span class="skill-tag">JIRA</span>
+                    <span class="skill-tag">Data Loader</span>
+                    <span class="skill-tag">Postman</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="section-header">
+            <h2 class="section-title">FEATURED PROJECTS</h2>
+            <p class="section-subtitle">AppExchange-ready solutions and enterprise applications driving business value</p>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">TimeGauge (2GP)</h3>
+                    <p class="project-description">
+                        Architected AppExchange-ready time tracking solution with advanced analytics and visualization. Features batch processing, custom LWC components, and ChartJS integration with 92% code coverage exceeding Salesforce requirements.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Apex Batch</span>
+                        <span class="tech-badge">LWC</span>
+                        <span class="tech-badge">ChartJS</span>
+                        <span class="tech-badge">2GP Package</span>
+                        <span class="tech-badge">92% Coverage</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">Sales Target Accelerator</h3>
+                    <p class="project-description">
+                        Built intelligent KPI forecasting engine using Custom Metadata and Reports API. Provides real-time sales analytics and predictions, adopted by 50+ users across 5 client organizations for strategic decision-making.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Custom Metadata</span>
+                        <span class="tech-badge">Reports API</span>
+                        <span class="tech-badge">Einstein Discovery</span>
+                        <span class="tech-badge">Forecasting</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">Appointment Scheduler</h3>
+                    <p class="project-description">
+                        Designed comprehensive Field Service booking system with custom LWC calendar interface and Service Appointment integration. Handles 500+ monthly bookings with automated scheduling, notifications, and resource optimization.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">Field Service</span>
+                        <span class="tech-badge">LWC Calendar</span>
+                        <span class="tech-badge">Service Appointments</span>
+                        <span class="tech-badge">Automation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">Expense Manager App</h3>
+                    <p class="project-description">
+                        Developed automated expense tracking and approval system using LWC and Flows. Streamlined expense management for 100+ employees, reducing approval time by 60% through intelligent workflow automation.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">LWC</span>
+                        <span class="tech-badge">Flow Builder</span>
+                        <span class="tech-badge">Approval Process</span>
+                        <span class="tech-badge">Automation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">JIRA Integration Suite</h3>
+                    <p class="project-description">
+                        Implemented enterprise-grade bidirectional sync between Salesforce and JIRA using REST APIs and Platform Events. Achieved real-time data synchronization with zero data loss across project management workflows.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">REST API</span>
+                        <span class="tech-badge">Platform Events</span>
+                        <span class="tech-badge">Named Credentials</span>
+                        <span class="tech-badge">Real-time Sync</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-content">
+                    <h3 class="project-title">CRM Analytics Dashboards</h3>
+                    <p class="project-description">
+                        Created comprehensive operational insights platform using CRM Analytics. Provides real-time business intelligence to 200+ users across 3 business units with custom visualizations and predictive analytics.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-badge">CRM Analytics</span>
+                        <span class="tech-badge">SAQL</span>
+                        <span class="tech-badge">Dashboards</span>
+                        <span class="tech-badge">Business Intelligence</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section>
+        <div class="section-header">
+            <h2 class="section-title">CERTIFICATIONS</h2>
+            <p class="section-subtitle">Validated expertise in Salesforce development, AI, and platform architecture</p>
+        </div>
+
+        <div class="certs-grid">
+            <div class="cert-card">
+                <p class="cert-name">Salesforce Certified Platform Developer I</p>
+            </div>
+            <div class="cert-card">
+                <p class="cert-name">Salesforce Certified AI Associate</p>
+            </div>
+            <div class="cert-card">
+                <p class="cert-name">Salesforce Certified Agentforce Specialist</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-header">
+            <h2 class="section-title">LET'S CONNECT</h2>
+            <p class="section-subtitle">Ready to build something extraordinary? Let's talk about your next Salesforce project</p>
+        </div>
+
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <div class="contact-text">
+                        <strong>Email</strong><br>
+                        <a href="/cdn-cgi/l/email-protection#abd8c3cad9c6cadbded8c3c0cad9999d9b9eebccc6cac2c785c8c4c6"><span class="__cf_email__" data-cfemail="63100b02110e021316100b0802115155535623040e020a0f4d000c0e">[email&#160;protected]</span></a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-text">
+                        <strong>Phone</strong><br>
+                        <a href="tel:+916306068840">+91-6306068840</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">💼</span>
+                    <div class="contact-text">
+                        <strong>LinkedIn</strong><br>
+                        <a href="https://www.linkedin.com/in/pushkar-sharma-6306068840" target="_blank">Connect with me</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-cta">
+                <h3>Open to Opportunities</h3>
+                <p>
+                    Currently exploring new challenges in Salesforce development, AI automation, and cloud architecture. 
+                    Let's discuss how I can contribute to your team's success.
+                </p>
+                <a href="/cdn-cgi/l/email-protection#dcafb4bdaeb1bdaca9afb4b7bdaeeeeaece99cbbb1bdb5b0f2bfb3b1" class="btn btn-primary">GET IN TOUCH</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/pushkar-sharma-6306068840" target="_blank" class="social-link">in</a>
+                <a href="/cdn-cgi/l/email-protection#12617a73607f736267617a7973602024222752757f737b7e3c717d7f" class="social-link">@</a>
+                <a href="tel:+916306068840" class="social-link">☎</a>
+            </div>
+            <p class="footer-text">
+                © 2026 Pushkar Sharma. Built with passion for innovation.<br>
+                Salesforce Developer | AI Automation Specialist | Cloud Architect
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Scroll to top button visibility
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
